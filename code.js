@@ -1,12 +1,19 @@
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 300;
+
+var scale = window.devicePixelRatio;
+const WIDTH = scale * CANVAS_WIDTH;
+const HEIGHT = scale * CANVAS_HEIGHT;
 const canvas = document.getElementById("sandbox");
 const context = canvas.getContext("2d");
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
+
+canvas.style.width = CANVAS_WIDTH + "px";
+canvas.style.height = CANVAS_HEIGHT + "px";
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
 
 var balls = [];
-var paddle = { x: 300, y: 100, w: 40, h: 80 };
+var paddle = { x: 300 * scale, y: 100 * scale, w: 40 * scale, h: 80 * scale };
 var Key = {
   LEFT: 37,
   UP: 38,
@@ -27,20 +34,21 @@ window.onkeyup = (event) => {
 };
 
 function draw() {
-  const distance = 5;
+  const distance = 5 * scale;
+  const increment = 1 * scale;
   if (pressedKeys[Key.W]) {
-    paddle.h -= 1;
+    paddle.h -= increment;
     if (paddle.h < 1) paddle.h = 1;
   }
   if (pressedKeys[Key.S]) {
-    paddle.h += 1;
+    paddle.h += increment;
   }
   if (pressedKeys[Key.A]) {
-    paddle.w -= 1;
+    paddle.w -= increment;
     if (paddle.w < 1) paddle.w = 1;
   }
   if (pressedKeys[Key.D]) {
-    paddle.w += 1;
+    paddle.w += increment;
   }
   if (pressedKeys[Key.UP]) {
     paddle.y -= distance;
@@ -48,8 +56,7 @@ function draw() {
   }
   if (pressedKeys[Key.DOWN]) {
     paddle.y += distance;
-    if (paddle.y + paddle.h > CANVAS_HEIGHT)
-      paddle.y = CANVAS_HEIGHT - paddle.h;
+    if (paddle.y + paddle.h > HEIGHT) paddle.y = HEIGHT - paddle.h;
   }
   if (pressedKeys[Key.LEFT]) {
     paddle.x -= distance;
@@ -57,31 +64,38 @@ function draw() {
   }
   if (pressedKeys[Key.RIGHT]) {
     paddle.x += distance;
-    if (paddle.x + paddle.w > CANVAS_WIDTH) paddle.x = CANVAS_WIDTH - paddle.w;
+    if (paddle.x + paddle.w > WIDTH) paddle.x = WIDTH - paddle.w;
   }
 
   context.fillStyle = "black";
-  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  context.fillRect(0, 0, WIDTH, HEIGHT);
   context.fillStyle = "wheat";
-  context.fillRect(2, 2, CANVAS_WIDTH - 4, CANVAS_HEIGHT - 4);
+  const borderWidth = 2 * scale;
+  context.fillRect(
+    borderWidth,
+    borderWidth,
+    WIDTH - borderWidth * 2,
+    HEIGHT - borderWidth * 2
+  );
 
   context.fillStyle = "green";
   context.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
 
+  const ballRadius = 5 * scale;
   balls.forEach((ball) => {
     context.fillStyle = "red";
     context.beginPath();
-    context.arc(ball.position.x, ball.position.y, 5, 0, 2 * Math.PI);
+    context.arc(ball.position.x, ball.position.y, ballRadius, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
 
     // check for walls
     // check for left and right walls
-    if (ball.position.x < 0 || ball.position.x > CANVAS_WIDTH) {
+    if (ball.position.x < 0 || ball.position.x > WIDTH) {
       ball.velocity.x *= -1;
     }
     // check for top and bottom walls
-    if (ball.position.y < 0 || ball.position.y > CANVAS_HEIGHT) {
+    if (ball.position.y < 0 || ball.position.y > HEIGHT) {
       ball.velocity.y *= -1;
     }
 
@@ -123,8 +137,8 @@ window.requestAnimationFrame(draw);
 
 function addBall() {
   const randomPosition = {
-    x: Math.random() * CANVAS_WIDTH,
-    y: Math.random() * CANVAS_HEIGHT,
+    x: Math.random() * WIDTH,
+    y: Math.random() * HEIGHT,
   };
   const randomVelocity = {
     x: Math.random() * 20 - 10,
