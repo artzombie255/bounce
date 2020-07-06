@@ -1,11 +1,9 @@
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 300;
 const canvas = document.getElementById("sandbox");
-const CANVAS_CONTEXT = canvas.getContext("2d");
-canvas.style.width = CANVAS_WIDTH + "px";
-canvas.style.height = CANVAS_HEIGHT + "px";
-
-const context = CANVAS_CONTEXT;
+const context = canvas.getContext("2d");
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 
 var balls = [];
 var paddle = { x: 300, y: 100, w: 40, h: 80 };
@@ -21,11 +19,11 @@ var Key = {
 };
 
 var pressedKeys = {};
-window.onkeyup = (e) => {
-  pressedKeys[e.keyCode] = false;
+window.onkeydown = (event) => {
+  pressedKeys[event.keyCode] = true;
 };
-window.onkeydown = (e) => {
-  pressedKeys[e.keyCode] = true;
+window.onkeyup = (event) => {
+  pressedKeys[event.keyCode] = false;
 };
 
 function draw() {
@@ -78,7 +76,6 @@ function draw() {
     context.fill();
 
     // check for walls
-
     // check for left and right walls
     if (ball.position.x < 0 || ball.position.x > CANVAS_WIDTH) {
       ball.velocity.x *= -1;
@@ -121,7 +118,7 @@ function draw() {
   });
   window.requestAnimationFrame(draw);
 }
-
+Array(5).fill("").forEach(addBall);
 window.requestAnimationFrame(draw);
 
 function addBall() {
