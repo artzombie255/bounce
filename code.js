@@ -14,29 +14,52 @@ var Key = {
   UP: 38,
   RIGHT: 39,
   DOWN: 40,
+  W: 87,
+  S: 83,
+  A: 65,
+  D: 68,
 };
 
 var pressedKeys = {};
-window.onkeyup = function (e) {
+window.onkeyup = (e) => {
   pressedKeys[e.keyCode] = false;
 };
-window.onkeydown = function (e) {
+window.onkeydown = (e) => {
   pressedKeys[e.keyCode] = true;
 };
 
 function draw() {
   const distance = 5;
+  if (pressedKeys[Key.W]) {
+    paddle.h -= 1;
+    if (paddle.h < 1) paddle.h = 1;
+  }
+  if (pressedKeys[Key.S]) {
+    paddle.h += 1;
+  }
+  if (pressedKeys[Key.A]) {
+    paddle.w -= 1;
+    if (paddle.w < 1) paddle.w = 1;
+  }
+  if (pressedKeys[Key.D]) {
+    paddle.w += 1;
+  }
   if (pressedKeys[Key.UP] === true) {
     paddle.y -= distance;
+    if (paddle.y < 0) paddle.y = 0;
   }
   if (pressedKeys[Key.DOWN] === true) {
     paddle.y += distance;
+    if (paddle.y + paddle.h > CANVAS_HEIGHT)
+      paddle.y = CANVAS_HEIGHT - paddle.h;
   }
   if (pressedKeys[Key.LEFT] === true) {
     paddle.x -= distance;
+    if (paddle.x < 0) paddle.x = 0;
   }
   if (pressedKeys[Key.RIGHT] === true) {
     paddle.x += distance;
+    if (paddle.x + paddle.w > CANVAS_WIDTH) paddle.x = CANVAS_WIDTH - paddle.w;
   }
 
   context.fillStyle = "black";
@@ -48,7 +71,7 @@ function draw() {
   context.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
 
   balls.forEach((ball) => {
-    context.fillStyle = "black";
+    context.fillStyle = "red";
     context.beginPath();
     context.arc(ball.position.x, ball.position.y, 5, 0, 2 * Math.PI);
     context.stroke();
