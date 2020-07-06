@@ -90,7 +90,7 @@ function draw() {
   balls.forEach((ball) => {
     context.fillStyle = ball.color;
     context.beginPath();
-    context.arc(ball.position.x, ball.position.y, ballRadius, 0, 2 * Math.PI);
+    context.arc(ball.position.x, ball.position.y, ball.radius, 0, 2 * Math.PI);
     context.fill();
 
     // check for walls
@@ -153,6 +153,7 @@ function addBall() {
     position: randomPosition,
     velocity: randomVelocity,
     color: randomColor,
+    radius: Math.random() * 10 * scale,
   };
   balls.push(newBall);
 }
