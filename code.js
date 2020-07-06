@@ -39,11 +39,17 @@ function draw() {
   context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   context.fillStyle = "wheat";
   context.fillRect(2, 2, CANVAS_WIDTH - 4, CANVAS_HEIGHT - 4);
+  // context.fillStyle = "black";
+  // context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  // context.fillStyle = "wheat";
+  // context.fillRect(2, 2, CANVAS_WIDTH - 4, CANVAS_HEIGHT - 4);
+  var color = (context.fillStyle =
+    "#" + Math.floor(Math.random() * 16777215).toString(16));
 
   context.fillStyle = "green";
   context.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
   balls.forEach((ball) => {
-    context.fillStyle = "red";
+    context.fillStyle = "black";
     context.beginPath();
     context.arc(ball.position.x, ball.position.y, 5, 0, 2 * Math.PI);
     context.stroke();
@@ -99,7 +105,6 @@ function draw() {
     ball.position.x += ball.velocity.x;
     ball.position.y += ball.velocity.y;
   });
-
   window.requestAnimationFrame(draw);
 }
 
