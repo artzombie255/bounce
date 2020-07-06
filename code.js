@@ -23,11 +23,16 @@ var Key = {
   S: 83,
   A: 65,
   D: 68,
+  SPACE: 32,
+  ENTER: 13,
 };
 
 var pressedKeys = {};
 window.onkeydown = (event) => {
   pressedKeys[event.keyCode] = true;
+  if (event.keyCode == Key.SPACE || event.keyCode == Key.ENTER) {
+    addBall();
+  }
 };
 window.onkeyup = (event) => {
   pressedKeys[event.keyCode] = false;
@@ -83,18 +88,17 @@ function draw() {
 
   const ballRadius = 5 * scale;
   balls.forEach((ball) => {
-    context.fillStyle = "red";
+    context.fillStyle = ball.color;
     context.beginPath();
     context.arc(ball.position.x, ball.position.y, ballRadius, 0, 2 * Math.PI);
-    context.stroke();
     context.fill();
 
     // check for walls
-    // check for left and right walls
+    // left and right
     if (ball.position.x < 0 || ball.position.x > WIDTH) {
       ball.velocity.x *= -1;
     }
-    // check for top and bottom walls
+    // top and bottom
     if (ball.position.y < 0 || ball.position.y > HEIGHT) {
       ball.velocity.y *= -1;
     }
@@ -144,9 +148,11 @@ function addBall() {
     x: Math.random() * 20 - 10,
     y: Math.random() * 20 - 10,
   };
+  const randomColor = "#" + Math.random().toString(16).substr(-6);
   const newBall = {
     position: randomPosition,
     velocity: randomVelocity,
+    color: randomColor,
   };
   balls.push(newBall);
 }
