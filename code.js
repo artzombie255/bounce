@@ -94,32 +94,24 @@ function draw() {
       y: ball.position.y + ball.velocity.y,
     };
 
-    const paddleRightSide = paddle.x + paddle.w;
-    const paddleBottomSide = paddle.y + paddle.h;
-    const hHitTest =
-      newPosition.x > paddle.x && newPosition.x < paddleRightSide;
-    const vHitTest =
-      newPosition.y > paddle.y && newPosition.y < paddleBottomSide;
+    const paddleRight = paddle.x + paddle.w;
+    const paddleBottom = paddle.y + paddle.h;
+    const hHitTest = newPosition.x > paddle.x && newPosition.x < paddleRight;
+    const vHitTest = newPosition.y > paddle.y && newPosition.y < paddleBottom;
     // if new ball position hits the paddle at all
     if (hHitTest && vHitTest) {
-      const ballWillIntersectLeftPaddlePosition =
+      const ballIntersectLeft =
         ball.position.x < paddle.x && newPosition.x > paddle.x;
-      const ballWillIntersectRightPaddlePosition =
-        ball.position.x > paddleRightSide && newPosition.x < paddleRightSide;
-      if (
-        ballWillIntersectLeftPaddlePosition ||
-        ballWillIntersectRightPaddlePosition
-      ) {
+      const ballIntersectRight =
+        ball.position.x > paddleRight && newPosition.x < paddleRight;
+      if (ballIntersectLeft || ballIntersectRight) {
         ball.velocity.x *= -1;
       }
-      const ballWillIntersectTopPaddlePosition =
+      const ballIntersectTop =
         ball.position.y < paddle.y && newPosition.y > paddle.y;
-      const ballWillIntersectBottomPaddlePosition =
-        ball.position.y > paddleBottomSide && newPosition.y < paddleBottomSide;
-      if (
-        ballWillIntersectTopPaddlePosition ||
-        ballWillIntersectBottomPaddlePosition
-      ) {
+      const ballIntersectBottom =
+        ball.position.y > paddleBottom && newPosition.y < paddleBottom;
+      if (ballIntersectTop || ballIntersectBottom) {
         ball.velocity.y *= -1;
       }
     }
@@ -137,7 +129,6 @@ function addBall() {
     x: Math.random() * CANVAS_WIDTH,
     y: Math.random() * CANVAS_HEIGHT,
   };
-
   const randomVelocity = {
     x: Math.random() * 20 - 10,
     y: Math.random() * 20 - 10,
