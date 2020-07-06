@@ -16,25 +16,29 @@ var Key = {
   DOWN: 40,
 };
 
-window.addEventListener("keydown", (event) => {
-  const distance = 5;
-  switch (event.keyCode) {
-    case Key.UP:
-      paddle.y -= distance;
-      break;
-    case Key.DOWN:
-      paddle.y += distance;
-      break;
-    case Key.LEFT:
-      paddle.x -= distance;
-      break;
-    case Key.RIGHT:
-      paddle.x += distance;
-      break;
-  }
-});
+var pressedKeys = {};
+window.onkeyup = function (e) {
+  pressedKeys[e.keyCode] = false;
+};
+window.onkeydown = function (e) {
+  pressedKeys[e.keyCode] = true;
+};
 
 function draw() {
+  const distance = 5;
+  if (pressedKeys[Key.UP] === true) {
+    paddle.y -= distance;
+  }
+  if (pressedKeys[Key.DOWN] === true) {
+    paddle.y += distance;
+  }
+  if (pressedKeys[Key.LEFT] === true) {
+    paddle.x -= distance;
+  }
+  if (pressedKeys[Key.RIGHT] === true) {
+    paddle.x += distance;
+  }
+
   context.fillStyle = "black";
   context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   context.fillStyle = "wheat";
