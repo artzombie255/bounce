@@ -95,11 +95,17 @@ function draw() {
 
     // check for walls
     // left and right
-    if (ball.position.x < 0 || ball.position.x > WIDTH) {
+    if (
+      ball.position.x - ball.radius < 0 ||
+      ball.position.x + ball.radius > WIDTH
+    ) {
       ball.velocity.x *= -1;
     }
     // top and bottom
-    if (ball.position.y < 0 || ball.position.y > HEIGHT) {
+    if (
+      ball.position.y - ball.radius < 0 ||
+      ball.position.y + ball.radius > HEIGHT
+    ) {
       ball.velocity.y *= -1;
     }
 
@@ -109,10 +115,13 @@ function draw() {
       y: ball.position.y + ball.velocity.y,
     };
 
+    const paddleLeft = paddle.x;
     const paddleRight = paddle.x + paddle.w;
+    const paddleTop = paddle.y;
     const paddleBottom = paddle.y + paddle.h;
-    const hHitTest = newPosition.x > paddle.x && newPosition.x < paddleRight;
-    const vHitTest = newPosition.y > paddle.y && newPosition.y < paddleBottom;
+
+    const hHitTest = newPosition.x > paddleLeft && newPosition.x < paddleRight;
+    const vHitTest = newPosition.y > paddleTop && newPosition.y < paddleBottom;
     // if new ball position hits the paddle at all
     if (hHitTest && vHitTest) {
       const ballIntersectLeft =
