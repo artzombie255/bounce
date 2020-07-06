@@ -44,20 +44,20 @@ function draw() {
   if (pressedKeys[Key.D]) {
     paddle.w += 1;
   }
-  if (pressedKeys[Key.UP] === true) {
+  if (pressedKeys[Key.UP]) {
     paddle.y -= distance;
     if (paddle.y < 0) paddle.y = 0;
   }
-  if (pressedKeys[Key.DOWN] === true) {
+  if (pressedKeys[Key.DOWN]) {
     paddle.y += distance;
     if (paddle.y + paddle.h > CANVAS_HEIGHT)
       paddle.y = CANVAS_HEIGHT - paddle.h;
   }
-  if (pressedKeys[Key.LEFT] === true) {
+  if (pressedKeys[Key.LEFT]) {
     paddle.x -= distance;
     if (paddle.x < 0) paddle.x = 0;
   }
-  if (pressedKeys[Key.RIGHT] === true) {
+  if (pressedKeys[Key.RIGHT]) {
     paddle.x += distance;
     if (paddle.x + paddle.w > CANVAS_WIDTH) paddle.x = CANVAS_WIDTH - paddle.w;
   }
@@ -88,7 +88,7 @@ function draw() {
       ball.velocity.y *= -1;
     }
 
-    // check for collisions
+    // check for collisions with paddle
     var newPosition = {
       x: ball.position.x + ball.velocity.x,
       y: ball.position.y + ball.velocity.y,
@@ -98,10 +98,10 @@ function draw() {
     const paddleBottomSide = paddle.y + paddle.h;
     const hHitTest =
       newPosition.x > paddle.x && newPosition.x < paddleRightSide;
-    const vHitText =
+    const vHitTest =
       newPosition.y > paddle.y && newPosition.y < paddleBottomSide;
     // if new ball position hits the paddle at all
-    if (hHitTest && vHitText) {
+    if (hHitTest && vHitTest) {
       const ballWillIntersectLeftPaddlePosition =
         ball.position.x < paddle.x && newPosition.x > paddle.x;
       const ballWillIntersectRightPaddlePosition =
